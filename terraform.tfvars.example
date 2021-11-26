@@ -1,0 +1,12 @@
+namespace = "consul-blog"
+
+instance_type = "t2.micro"
+
+servers = 3
+
+clients = 3
+
+aws_access_key = "ACCESS_KEY"
+aws_secret_key = "ACCESS_SECRET"
+aws_region     = "us-west-2"
+public_key_path = "~/.ssh/id_ed25519.pub"

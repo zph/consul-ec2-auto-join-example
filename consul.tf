@@ -3,7 +3,7 @@ data "template_file" "server" {
   count    = "${var.servers}"
   template = "${file("${path.module}/templates/consul.sh.tpl")}"
 
-  vars {
+  vars = {
     consul_version = "0.7.5"
 
     config = <<EOF
@@ -23,7 +23,7 @@ data "template_file" "client" {
   count    = "${var.clients}"
   template = "${file("${path.module}/templates/consul.sh.tpl")}"
 
-  vars {
+  vars = {
     consul_version = "0.7.5"
 
     config = <<EOF
@@ -49,10 +49,10 @@ resource "aws_instance" "server" {
   iam_instance_profile   = "${aws_iam_instance_profile.consul-join.name}"
   vpc_security_group_ids = ["${aws_security_group.consul.id}"]
 
-  tags = "${map(
-    "Name", "${var.namespace}-server-${count.index}",
-    var.consul_join_tag_key, var.consul_join_tag_value
-  )}"
+  tags = "${tomap({
+    Name = "${var.namespace}-client-${count.index}"
+    "${var.consul_join_tag_key}" = var.consul_join_tag_value
+  })}"
 
   user_data = "${element(data.template_file.server.*.rendered, count.index)}"
 }
@@ -68,10 +68,10 @@ resource "aws_instance" "client" {
   iam_instance_profile   = "${aws_iam_instance_profile.consul-join.name}"
   vpc_security_group_ids = ["${aws_security_group.consul.id}"]
 
-  tags = "${map(
-    "Name", "${var.namespace}-client-${count.index}",
-    var.consul_join_tag_key, var.consul_join_tag_value
-  )}"
+  tags = "${tomap({
+    Name = "${var.namespace}-client-${count.index}"
+    "${var.consul_join_tag_key}" = var.consul_join_tag_value
+  })}"
 
   user_data = "${element(data.template_file.client.*.rendered, count.index)}"
 }

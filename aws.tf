@@ -20,8 +20,8 @@ resource "aws_vpc" "consul" {
   cidr_block           = "${var.vpc_cidr_block}"
   enable_dns_hostnames = true
 
-  tags {
-    "Name" = "${var.namespace}"
+  tags = {
+    Name = "${var.namespace}"
   }
 }
 
@@ -29,8 +29,8 @@ resource "aws_vpc" "consul" {
 resource "aws_internet_gateway" "consul" {
   vpc_id = "${aws_vpc.consul.id}"
 
-  tags {
-    "Name" = "${var.namespace}"
+  tags = {
+    Name = "${var.namespace}"
   }
 }
 
@@ -52,8 +52,8 @@ resource "aws_subnet" "consul" {
   cidr_block              = "${var.cidr_blocks[count.index]}"
   map_public_ip_on_launch = true
 
-  tags {
-    "Name" = "${var.namespace}"
+  tags = {
+    Name = "${var.namespace}"
   }
 }
 
@@ -105,5 +105,5 @@ resource "aws_iam_policy_attachment" "consul-join" {
 # Create the instance profile
 resource "aws_iam_instance_profile" "consul-join" {
   name  = "${var.namespace}-consul-join"
-  roles = ["${aws_iam_role.consul-join.name}"]
+  role = "${aws_iam_role.consul-join.name}"
 }

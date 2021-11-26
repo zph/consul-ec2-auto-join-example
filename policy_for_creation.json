@@ -1,0 +1,16 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "iam:*"
+            ],
+            "Resource": [
+                "arn:aws:iam::xxxxxxxxxxxx:role/consul-blog-consul-join",
+                "arn:aws:iam::xxxxxxxxxxxx:policy/consul-blog-consul-join",
+                "arn:aws:iam::xxxxxxxxxxxx:instance-profile/consul-blog-consul-join"
+            ]
+        }
+    ]
+}
